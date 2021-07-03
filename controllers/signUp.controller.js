@@ -27,4 +27,4 @@ const signUpUser = async (req, res) => {
   }
 };
 
-module.exports = signUpUser;
+module.exports = { signUpUser };

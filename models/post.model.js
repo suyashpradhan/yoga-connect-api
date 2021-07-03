@@ -13,7 +13,7 @@ const PostSchema = new Schema(
     },
     likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
-    active: Boolean,
+    isActive: Boolean,
   },
   { timestamps: true }
 );

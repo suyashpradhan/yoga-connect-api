@@ -4,7 +4,7 @@ const errorHandler = require("../utils/errorHandling.js");
 const createToken = require("../utils/createToken.js");
 const router = express.Router();
 
-router.route("/").post(async (req, res) => {
+const signInUser = async (req, res) => {
   const { userName, password } = req.body;
 
   try {
@@ -20,4 +20,6 @@ router.route("/").post(async (req, res) => {
     const errors = errorHandler(error);
     res.status(400).json({ success: false, errors });
   }
-});
+};
+
+module.exports = { signInUser };
