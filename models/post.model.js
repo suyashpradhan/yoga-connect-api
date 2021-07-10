@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const PostSchema = new Schema(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
@@ -12,7 +12,6 @@ const PostSchema = new Schema(
       require: "Post description cannot be left blank",
     },
     likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
-
     isActive: Boolean,
   },
   { timestamps: true }

@@ -1,34 +1,25 @@
-const { User } = require("../models/user.model");
-require("dotenv").config();
+const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
 const authValidator = async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
-
+    let token = req.headers.authorization;
     if (!token) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User is not logged in" });
+      return res.status(401).json({ success: false, errorMessage: "Unauthorized. Token not passed." });
     }
-
-    const { _id } = jwt.verify(token, process.env.TOKEN_SECRET);
-    const user = await User.findById({ _id });
-
+    token = token.split(" ")[1];
+    const decodedValue = jwt.verify(token, process.env.TOKEN_SECRET);
+    const user = await User.findOne({ _id: decodedValue._id });
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "User Not Found!",
-      });
+      return res.status(401).json({ success: false, errorMessage: "Unauthorized. Either user is not registered or Token is invalid." });
     }
-    req.user = user;
+    req.user = { _id: decodedValue._id, fullName: decodedValue.fullName };
     next();
-  } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: "Error Retrieving User",
-    });
   }
-};
+  catch (error) {
+    res.status(401).json({ success: false, errMessage: error.message });
+  }
+
+}
 
 module.exports = authValidator;

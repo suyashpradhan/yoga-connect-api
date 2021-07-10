@@ -1,4 +1,5 @@
 const Post = require("../models/post.model");
+const express = require("express")
 
 const fetchAllPosts = async (req, res) => {
   try {
@@ -23,7 +24,7 @@ const addNewPost = async (req, res) => {
     const { user } = req;
     const postData = req.body;
     let newPost = new Post(postData);
-    newPost.user = user._id;
+    newPost.userId = user._id;
     newPost.isActive = true;
     newPost = await newPost.save();
     res.status(201).json({

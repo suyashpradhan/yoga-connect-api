@@ -19,8 +19,8 @@ app.get("/", (req, res) => {
   res.send("Yoga Connect API :)");
 });
 
-app.use("/user", authValidator, userRoute);
-app.use("/post", authValidator, postRoute);
+app.use("/users", userRoute);
+app.use("/posts", authValidator, postRoute);
 
 app.listen(port, () =>
   console.log("> Server is up and running on port : " + port)
