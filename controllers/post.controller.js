@@ -58,13 +58,4 @@ const deletePost = async (req, res) => {
   }
 };
 
-const fetchPostById = async (req, res, next, postId) => {
-  let post = await Post.findOne({ _id: postId, isActive: true });
-  if (!post) {
-    res.status(500).json({ success: false, message: "Post Doesn't Exists" });
-  }
-  req.post = post;
-  next();
-};
-
-module.exports = { fetchAllPosts, addNewPost, deletePost, fetchPostById };
+module.exports = { fetchAllPosts, addNewPost, deletePost };

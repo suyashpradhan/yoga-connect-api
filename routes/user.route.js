@@ -2,21 +2,18 @@ const express = require("express");
 const router = express.Router();
 const authValidator = require("../middlewares/authValidator.middleware");
 const {
-  getUsers,
-  registerUser,
-  findUser,
-  getUserById,
-  updateUser,
+  fetchAllUsers,
+  updateUserDetails,
 } = require("../controllers/user.controller");
 
-router.route("/all").get(getUsers);
+const { registerUser } = require("../controllers/registerUser.controller")
+const { loginUser } = require("../controllers/loginUser.controller")
+const { fetchUserById } = require("../controllers/paramHandlers.controller")
 
-router.route("/login").post(findUser);
-
+router.route("/all").get(fetchAllUsers);
+router.route("/login").post(loginUser);
 router.route("/register").post(registerUser);
-
 router.use(authValidator);
-
-router.route("/").get(getUserById).post(updateUser);
+router.route("/").get(fetchUserById).post(updateUserDetails);
 
 module.exports = router;

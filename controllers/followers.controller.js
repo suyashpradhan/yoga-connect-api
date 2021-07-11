@@ -12,10 +12,10 @@ const userFollowers = async (req, res) => {
       loggedInUser.followers.includes(user._id)
     ) {
       user.following = user.following.filter(
-        (data) => data._id.toString() !== loggedInUserId.toString()
+        (data) => data._id !== loggedInUserId
       );
       loggedInUser.followers = loggedInUser.followers.filter(
-        (data) => data._id.toString() !== user._id.toString()
+        (data) => data._id !== user._id
       );
     } else {
       user.following.push(loggedInUserId);
