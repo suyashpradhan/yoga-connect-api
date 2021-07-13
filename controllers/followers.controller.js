@@ -1,32 +1,37 @@
-const { User } = require("../models/user.model");
+const User = require("../models/user.model");
 
 const userFollowers = async (req, res) => {
   try {
     let { user } = req;
-    const { loggedInUserId } = req.body;
+    const { viewerId } = req.body;
     user = await User.findOne({ _id: user._id });
-    const loggedInUser = await User.find({ _id: loggedInUserId });
+    let viewer = await User.findOne({ _id: viewerId });
+    console.log(viewer);
 
     if (
-      user.following.includes(loggedInUserId) ||
-      loggedInUser.followers.includes(user._id)
+      user.following.includes(viewerId) ||
+      viewer.followers.includes(user._id)
     ) {
       user.following = user.following.filter(
-        (user) => user._id !== loggedInUserId
+        (data) => data._id.toString() !== viewerId.toString()
       );
-      loggedInUser.followers = loggedInUser.followers.filter(
-        (user) => user._id !== user._id
+      viewer.followers = viewer.followers.filter(
+        (data) => data._id.toString() !== user._id.toString()
       );
     } else {
-      user.following.push(loggedInUserId);
-      loggedInUser.followers.push(user._id);
+      user.following.push(viewerId);
+      viewer.followers.push(user._id);
     }
 
     user = await user.save();
-    loggedInUser = await loggedInUser.save();
-    res.status(200).json({ success: true, user, loggedInUser });
-  } catch (e) {
-    res.status(500).json({ success: false, message: "Something Went Wrong" });
+    viewer = await viewer.save();
+    res.status(200).json({ success: true, user, viewer });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Unable to update user followers/following",
+      errMessage: err.message,
+    });
   }
 };
 

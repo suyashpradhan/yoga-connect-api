@@ -44,12 +44,9 @@ const UserSchema = new Schema({
       ref: "User",
     },
   ],
-
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, {
+    timestamps: true,
+  });
 
 
 //Created User Model
